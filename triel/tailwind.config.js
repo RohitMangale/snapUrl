@@ -1,7 +1,7 @@
+import { withUt } from "uploadthing/tw";
 
-import { withUt } from "uploadthing/tw"
 /** @type {import('tailwindcss').Config} */
-export default withUt({  
+export default withUt({
 	darkMode: ["class"],
 	content: [
 		"./pages/**/*.{ts,tsx}",

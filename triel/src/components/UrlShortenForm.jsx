@@ -1,10 +1,10 @@
-
 import { useState } from "react";
+import axios from "@/api/axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Check, Copy, Link as LinkIcon } from "lucide-react";
-// import { toast } from "@/hooks/use-toast";
+import { toast } from "react-toastify";
 
 const UrlShortenForm = () => {
   const [url, setUrl] = useState("");
@@ -12,38 +12,41 @@ const UrlShortenForm = () => {
   const [shortenedUrl, setShortenedUrl] = useState("");
   const [copied, setCopied] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // if (!url) {
-    //   toast({
-    //     title: "Error",
-    //     description: "Please enter a URL",
-    //     variant: "destructive",
-    //   });
-    //   return;
-    // }
+
+    if (!url) {
+      toast.error("Please enter a URL");
+      return;
+    }
 
     setIsLoading(true);
+    setShortenedUrl("");
+    setCopied(false);
 
-    // Simulate API call
-    setTimeout(() => {
-      const randomString = Math.random().toString(36).substring(2, 7);
-      setShortenedUrl(`snap.url/${randomString}`);
+    try {
+      // Replace this URL with your backend API endpoint
+      const response = await axios.post("/shorten", { original_url: url });
+
+      // Assuming backend response format: { shortUrl: "snap.url/abcde" }
+      setShortenedUrl(response.data.shortUrl);
+      toast.success("URL shortened successfully! Your URL is ready to share.");
+      setUrl("");
+
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to shorten URL. Please try again.");
+    } finally {
       setIsLoading(false);
-      
-      // toast({
-      //   title: "URL shortened successfully",
-      //   description: "Your URL is ready to share!",
-      // });
-    }, 1000);
+    }
   };
 
   const handleCopy = () => {
     if (shortenedUrl) {
       navigator.clipboard.writeText(`https://${shortenedUrl}`);
       setCopied(true);
-      
+
+      toast.info("Copied to clipboard!");
+
       setTimeout(() => {
         setCopied(false);
       }, 2000);
@@ -65,10 +68,11 @@ const UrlShortenForm = () => {
                 className="pl-10"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
+                required
               />
             </div>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="bg-brand-600 hover:bg-brand-700"
               disabled={isLoading}
             >

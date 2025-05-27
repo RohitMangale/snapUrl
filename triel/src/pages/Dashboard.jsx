@@ -9,7 +9,7 @@ const Dashboard = () => {
       <div className="flex flex-col gap-8">
         {/* Welcome section */}
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          {/* <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1> */}
           <p className="text-muted-foreground">
             Create and manage your shortened URLs
           </p>

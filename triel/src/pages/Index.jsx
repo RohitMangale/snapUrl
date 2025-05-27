@@ -6,48 +6,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header/Navigation */}
-      <header className="border-b">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold text-brand-700">SnapURL</span>
-            </div>
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link to="/features" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-                Features
-              </Link>
-              <Link to="/pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-                Pricing
-              </Link>
-              <Link to="/login" className="text-sm font-medium text-brand-600 hover:text-brand-700">
-                Log in
-              </Link>
-              <Link to="/signup">
-                <Button className="bg-brand-600 hover:bg-brand-700">Sign up</Button>
-              </Link>
-            </nav>
-            <div className="md:hidden">
-              <Button variant="ghost">
-                <span className="sr-only">Open menu</span>
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+
 
       {/* Hero Section */}
       <section className="flex-grow flex items-center bg-gradient-to-b from-secondary/40 to-background">
