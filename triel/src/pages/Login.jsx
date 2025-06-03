@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "@/api/axios";
-import { loginStart,loginFailure,loginSuccess } from "../redux/slices/authSlice"; // adjust import if needed
+import { loginStart, loginFailure, loginSuccess } from "../redux/slices/authSlice";
+
+import supabase from "@/services/supabaseClient";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,16 +31,58 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     dispatch(loginStart());
-try {
-  const response = await axios.post('/auth/login', { email, password });
-  dispatch(loginSuccess(response.data));
-   toast.success('Login Successful');
-  navigate('/dashboard');
-} catch (error) {
-  dispatch(loginFailure(error.response?.data?.message || 'Login failed'));
-  toast.error(error.response?.data?.message || 'Login failed');
-}
-     finally {
+    try {
+      const response = await axios.post('/auth/login', { email, password });
+      dispatch(loginSuccess(response.data));
+      toast.success('Login Successful');
+      navigate('/dashboard');
+    } catch (error) {
+      dispatch(loginFailure(error.response?.data?.message || 'Login failed'));
+      toast.error(error.response?.data?.message || 'Login failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    dispatch(loginStart());
+
+    try {
+      // Start Google OAuth popup
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+      });
+
+      if (error) throw error;
+
+      // Wait for session after OAuth (popup method)
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) throw new Error("No session found after Google login");
+
+      const supabaseToken = session.access_token;
+
+      // Send Supabase token to backend for JWT exchange
+      const response = await axios.post(
+        "/auth/google-auth",
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${supabaseToken}`,
+          },
+        }
+      );
+
+      dispatch(loginSuccess(response.data));
+      toast.success("Google login successful");
+      navigate("/dashboard");
+    } catch (error) {
+      dispatch(loginFailure(error.message || "Google login failed"));
+      toast.error(error.message || "Google login failed");
+    } finally {
       setIsLoading(false);
     }
   };
@@ -60,6 +104,7 @@ try {
               Enter your email to sign in to your account
             </CardDescription>
           </CardHeader>
+
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -93,6 +138,7 @@ try {
                 />
               </div>
             </CardContent>
+
             <CardFooter className="flex flex-col space-y-4">
               <Button
                 type="submit"
@@ -101,6 +147,16 @@ try {
               >
                 {isLoading ? "Signing in..." : "Sign in"}
               </Button>
+
+              <Button
+                type="button"
+                className="w-full bg-red-600 hover:bg-red-700"
+                onClick={handleGoogleLogin}
+                disabled={isLoading}
+              >
+                {isLoading ? "Signing in with Google..." : "Sign in with Google"}
+              </Button>
+
               <div className="text-center text-sm text-muted-foreground">
                 Don't have an account?{" "}
                 <Link
