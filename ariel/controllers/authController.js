@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';  // changed from 'bcrypt'
-import jwt from 'jsonwebtoken';
-import supabase from '../services/supabaseClient.js';
+
 
 import jwt from 'jsonwebtoken';
 import supabase from '../services/supabaseClient.js';

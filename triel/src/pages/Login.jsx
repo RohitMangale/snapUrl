@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "@/api/axios";
@@ -26,6 +26,19 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+  const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      // Save user to Redux/localStorage, etc.
+      console.log('User signed in:', session.user);
+    }
+  });
+
+  return () => {
+    authListener?.subscription.unsubscribe();
+  };
+}, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,8 +80,7 @@ const Login = () => {
 
       // Send Supabase token to backend for JWT exchange
       const response = await axios.post(
-        "/auth/google-auth",
-        null,
+        "/auth/googleAuth",
         {
           headers: {
             Authorization: `Bearer ${supabaseToken}`,
@@ -88,7 +100,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-secondary/50 to-background">
+    <div className="max-h-screen flex flex-col items-center justify-center  p-4 pt-[100px] bg-gradient-to-b from-secondary/50 to-background">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="text-3xl font-bold text-brand-700">
@@ -139,7 +151,7 @@ const Login = () => {
               </div>
             </CardContent>
 
-            <CardFooter className="flex flex-col space-y-4">
+            <CardFooter className="flex flex-col mt-5 space-y-4">
               <Button
                 type="submit"
                 className="w-full bg-brand-600 hover:bg-brand-700"

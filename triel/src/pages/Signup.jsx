@@ -33,7 +33,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-b from-secondary/50 to-background">
+    <div className="max-h-screen flex flex-col items-center justify-center p-4 pt-[100px] bg-gradient-to-b from-secondary/50 to-background">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to='/' className="text-3xl font-bold text-brand-700">SnapURL</Link>
@@ -56,7 +56,7 @@ const Signup = () => {
                 <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
             </CardContent>
-            <CardFooter className="flex flex-col space-y-4">
+            <CardFooter className="flex flex-col space-y-4 mt-5">
               <Button type="submit" className="w-full bg-brand-600 hover:bg-brand-700" disabled={loading}>
                 {loading ? 'Creating account...' : 'Create account'}
               </Button>
