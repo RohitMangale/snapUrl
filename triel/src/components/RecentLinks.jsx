@@ -65,7 +65,7 @@ const RecentLinks = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Links</CardTitle>
+        {/* <CardTitle>Recent Links</CardTitle> */}
         <CardDescription>
           Your recently created short links and their performance
         </CardDescription>

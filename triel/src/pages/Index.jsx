@@ -1,6 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import analytics  from '../assets/analyticsPic.png'
 
 const Index = () => {
   return (
@@ -51,12 +52,14 @@ const Index = () => {
                       123 clicks
                     </div>
                   </div>
-                  <div className="h-40 border rounded-md p-3 bg-gray-50 flex items-center justify-center">
-                    <div className="text-center text-muted-foreground">
-                      <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="h-48 border rounded-md  bg-gray-50 flex items-center justify-center">
+                    <div className="text-center text-muted-foreground w-full h-full overflow-hidden ">
+                      <img src={analytics} className=" w-full h-auto rounded-md  " alt=""  />
+
+                      {/* <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                       </svg>
-                      <p className="mt-2 text-sm">Analytics Dashboard</p>
+                      <p className="mt-2 text-sm">Analytics Dashboard</p> */}
                     </div>
                   </div>
                 </div>
